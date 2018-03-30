@@ -4,7 +4,7 @@ This is a simplistic calendar (datepicker) for use within React, you can pass
 in a minDate and maxDate using the javascript Date method call.
 
 ```
-import Calendar from '../components/calendar/Calendar'
+import Calendar from '../components/react-calendar/build'
 
 // class method
 createEvent(date) {
