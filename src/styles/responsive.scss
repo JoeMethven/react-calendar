@@ -1,0 +1,35 @@
+$react-calendar-laptop: 1440px;
+$react-calendar-tablet: 1024px;
+$react-calendar-phone: 768px;
+$react-calendar-palm: 480px;
+
+@mixin responsive($react-calendar-media, $react-calendar-min:false) {
+  @if $react-calendar-min == true {
+    @if $react-calendar-media == laptop {
+      @media only screen and (min-width: ($react-calendar-laptop + 1)) { @content; }
+    }
+    @else if $react-calendar-media == tablet {
+      @media only screen and (min-width: ($react-calendar-tablet + 1)) { @content; }
+    }
+    @else if $react-calendar-media == phone {
+      @media only screen and (min-width: ($react-calendar-phone + 1)) { @content; }
+    }
+    @else if $react-calendar-media == palm {
+      @media only screen and (min-width: ($react-calendar-palm + 1)) { @content; }
+    }
+  }
+  @else {
+    @if $react-calendar-media == laptop {
+      @media only screen and (max-width: $react-calendar-laptop) { @content; }
+    }
+    @else if $react-calendar-media == tablet {
+      @media only screen and (max-width: $react-calendar-tablet) { @content; }
+    }
+    @else if $react-calendar-media == phone {
+      @media only screen and (max-width: $react-calendar-phone) { @content; }
+    }
+    @else if $react-calendar-media == palm {
+      @media only screen and (max-width: $react-calendar-palm) { @content; }
+    }
+  }
+}

@@ -1,0 +1,134 @@
+.calendar {
+  display: block;
+  width: 100%;
+  background: $react-calendar-colour-accent;
+  border-radius: $react-calendar-border-radius;
+  color: $react-calendar-colour-white;
+  font-size: 1em;
+  font-family: $react-calendar-font-family-base;
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+  &, *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  h1, h2, h3, h4, h5, h6, .bold {
+    font-family: $react-calendar-font-family-heading;
+    font-weight: 700;
+  }
+
+  h1 {
+    font-size: $react-calendar-font-size * 1.5;
+  }
+
+  h2 {
+    font-size: $react-calendar-font-size * 1.4;
+  }
+
+  h3 {
+    font-size: $react-calendar-font-size * 1.3;
+  }
+
+  h4 {
+    font-size: $react-calendar-font-size * 1.1;
+  }
+
+  h5 {
+    font-size: $react-calendar-font-size * 1;
+    text-transform: uppercase;
+  }
+
+  h6 {
+    font-size: $react-calendar-font-size / 1.1111111111;
+    text-transform: uppercase;
+  }
+
+  .svg-inline--fa {
+    font-size: $react-calendar-font-size * 1.75
+  }
+
+  .calendar-header {
+    text-align: center;
+    padding: $react-calendar-dsu;
+    padding-bottom: $react-calendar-bsu;
+    position: relative;
+
+    > * {
+      user-select: none;
+    }
+
+    .calendar-header-prev, .calendar-header-next {
+      position: absolute;
+      top: $react-calendar-dsu;
+      cursor: pointer;
+      transition: color cubic-bezier(.17,.67,.83,.67) .2s;
+
+      &:hover {
+        color: transparentize($react-calendar-colour-white, 0.15);
+      }
+    }
+
+    .calendar-header-prev {
+      left: $react-calendar-dsu;
+    }
+
+    .calendar-header-next {
+      right: $react-calendar-dsu;
+    }
+  }
+
+  .calendar-labels, .calendar-days {
+    padding: 0 $react-calendar-dsu;
+    text-align: center;
+    display: grid;
+    // grid-template-columns: repeat(7, 45px);
+    // grid-template-columns: repeat(7, calc(#{(100% / 7)} - #{$react-calendar-tsu + 2}));
+    grid-template-columns: repeat(7, calc(#{(100% / 7)} - #{$react-calendar-qsu}));
+    grid-gap: $react-calendar-qsu;
+    // grid-gap: $react-calendar-bsu;
+  }
+
+  .calendar-labels {
+    margin: $react-calendar-hsu 0;
+    cursor: text;
+  }
+
+  .calendar-days {
+    grid-auto-flow: row dense;
+    padding-bottom: $react-calendar-bsu;
+    grid-auto-rows: 45px;
+
+    > * {
+      line-height: 45px;
+
+      &[disabled] {
+        color: darken($react-calendar-colour-accent, 3%);
+
+        span {
+          cursor: not-allowed;
+
+          &:hover {
+            background: none;
+          }
+        }
+      }
+
+      span {
+        width: $react-calendar-dsu;
+        height: $react-calendar-dsu;
+        display: inline-block;
+        padding: 4px;
+        cursor: pointer;
+        transition: background cubic-bezier(.17,.67,.83,.67) .2s;
+        border-radius: $react-calendar-border-radius;
+
+        &:hover {
+          background: lighten($react-calendar-colour-accent, 3%);
+        }
+      }
+    }
+  }
+}

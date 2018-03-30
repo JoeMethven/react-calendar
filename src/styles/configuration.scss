@@ -1,0 +1,15 @@
+$react-calendar-font-size: 1em;
+$react-calendar-font-family-heading: 'font-heading', 'Helvetica', 'Arial', sans-serif;
+$react-calendar-font-family-base: 'font-base', 'Helvetica', 'Arial', sans-serif;
+
+$react-calendar-colour-accent: #9073D0;
+$react-calendar-colour-white: #ffffff;
+$react-calendar-colour-light-gray: #f5f5f5;
+
+$react-calendar-border-radius: 3px;
+
+$react-calendar-bsu: 20px;
+$react-calendar-dsu: $react-calendar-bsu * 2;
+$react-calendar-hsu: $react-calendar-bsu / 2;
+$react-calendar-qsu: $react-calendar-bsu / 4;
+$react-calendar-tsu: ($react-calendar-bsu / 4) * 3;
