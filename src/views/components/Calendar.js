@@ -12,18 +12,18 @@ export default class Calendar extends React.Component {
       currentYear: this.setCurrentYear(new Date().getFullYear()),
       currentMonth: this.setCurrentMonth(new Date().getMonth() + 1)
     }
-    this.updateDate = this.updateDate.bind(this)
   }
 
   handleDayClick(day) {
-    this.props.handleDayClick(new Date(this.state.currentYear, this.state.currentMonth, day))
+    // minus currentMonth as state needs to return to zero-based index before formatted back to Date
+    this.props.handleDayClick(new Date(this.state.currentYear, this.state.currentMonth - 1, day))
   }
 
   setCurrentYear() {
     return new Date().getFullYear()
   }
 
-  setCurrentMonth(currentDate) {
+  setCurrentMonth(currentMonth) {
     const calcMonth = (date) => {
             if (this.props.minDate && date < this.props.minDate.getMonth() + 1) {
               return calcMonth(date + 1)
@@ -32,7 +32,7 @@ export default class Calendar extends React.Component {
             return date
           }
 
-    return calcMonth(currentDate)
+    return calcMonth(currentMonth)
   }
 
   prevMonth(currentYear, currentMonth) {
