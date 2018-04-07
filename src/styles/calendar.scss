@@ -104,6 +104,14 @@
     > * {
       line-height: 45px;
 
+      &.active > span {
+        &, &:hover {
+          background: $react-calendar-colour-white;
+          color: $react-calendar-colour-accent;
+          cursor: default;
+        }
+      }
+
       &[disabled] {
         color: darken($react-calendar-colour-accent, 3%);
 

@@ -1,72 +1,79 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 import Header from './CalendarHeader'
 import Labels from './CalendarLabels'
 import Days from './CalendarDays'
 
-export default class Calendar extends React.Component {
+class Calendar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentYear: this.setCurrentYear(new Date().getFullYear()),
-      currentMonth: this.setCurrentMonth(new Date().getMonth() + 1)
+      // the date viewed on the calendar currently (day will either be first day or selected day)
+      date: this.props.date,
+      // the selected date on the calendar (not necessarily the date viewed)
+      selectedDate: this.props.date
+    }
+
+    this.handlePrevMonthDisabled = this.handlePrevMonthDisabled.bind(this)
+    this.handleNextMonthDisabled = this.handleNextMonthDisabled.bind(this)
+  }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log('doing it!', {
+  //     nextProps,
+  //     nextState
+  //   })
+  //
+  //   if (this.props.date === nextProps.date) {
+  //     return false
+  //   }
+  //
+  //   return true
+  // }
+
+  renderDay(day) {
+    let selectedDate = new Date(this.state.date)
+    selectedDate.setDate(day)
+
+    this.setState({date: selectedDate, selectedDate})
+
+    // callback to parent component if given
+    if (this.props.selectedDayCallback) {
+      this.props.selectedDayCallback(selectedDate)
     }
   }
 
-  handleDayClick(day) {
-    // minus currentMonth as state needs to return to zero-based index before formatted back to Date
-    this.props.handleDayClick(new Date(this.state.currentYear, this.state.currentMonth - 1, day))
-  }
+  prevMonth() {
+    let date = new Date(this.state.date)
+    date.setMonth(date.getMonth() - 1)
+    date.setDate(1)
+    date.setHours(0, 0, 0, 0)
+    this.setState({date})
 
-  setCurrentYear() {
-    return new Date().getFullYear()
-  }
-
-  setCurrentMonth(currentMonth) {
-    const calcMonth = (date) => {
-            if (this.props.minDate && date < this.props.minDate.getMonth() + 1) {
-              return calcMonth(date + 1)
-            }
-
-            return date
-          }
-
-    return calcMonth(currentMonth)
-  }
-
-  prevMonth(currentYear, currentMonth) {
-    // - 2 on month to return back to zero based index, then minus for prev month
-    const newYear = new Date(currentYear, currentMonth - 2).getFullYear(),
-          newMonth = new Date(currentYear, currentMonth - 2).getMonth() + 1
-
-    this.updateDate(newYear, newMonth || 12)
+    if (this.props.prevMonthCallback) {
+      this.props.prevMonthCallback(date)
+    }
   }
 
   nextMonth(currentYear, currentMonth) {
-    // not modifying the currentMonth at all as the non-zero based index will push it to next month
-    const newYear = new Date(currentYear, currentMonth).getFullYear(),
-          newMonth = new Date(currentYear, currentMonth).getMonth() + 1
+    let date = new Date(this.state.date)
+    date.setMonth(date.getMonth() + 1)
+    date.setDate(1)
+    date.setHours(0, 0, 0, 0)
+    this.setState({date})
 
-    this.updateDate(newYear, newMonth || 12)
-  }
-
-  updateDate(newYear, newMonth) {
-    this.setState({
-      currentYear: newYear,
-      currentMonth: newMonth
-    })
+    if (this.props.prevMonthCallback) {
+      this.props.nextMonthCallback(date)
+    }
   }
 
   handlePrevMonthDisabled() {
     if (this.props.minDate) {
-      // first month in year and last year is minimum year
-      if (this.state.currentMonth === 0 && this.state.currentYear - 1 <= this.props.minDate.getFullYear()) {
-        return true
-      }
-
-      // last month is minimum month
-      if (this.state.currentYear <= this.props.minDate.getFullYear() && this.state.currentMonth - 1 < this.props.minDate.getMonth() + 1) {
+      let date = this.state.date
+      // prev month is less or equal to minDate
+      if (new Date(date.getFullYear(), date.getMonth() - 1, new Date(date.getFullYear(), date.getMonth(), 0).getDate(), 0, 0, 0, 0) <= this.props.minDate) {
         return true
       }
     }
@@ -76,12 +83,9 @@ export default class Calendar extends React.Component {
 
   handleNextMonthDisabled() {
     if (this.props.maxDate) {
-      // last month in year and next year is maximum year
-      if (this.state.currentMonth === 11 && this.state.currentYear + 1 >= this.props.maxDate.getFullYear()) {
-        return true
-      }
-
-      if (this.state.currentMonth + 1 > this.props.maxDate.getMonth() + 1) {
+      let date = this.state.date
+      // next month is greater or equal to maxDate
+      if (new Date(date.getFullYear(), date.getMonth() + 1, 1, 0, 0, 0, 0) >= this.props.maxDate) {
         return true
       }
     }
@@ -95,18 +99,29 @@ export default class Calendar extends React.Component {
         <Header
           prevMonthDisabled={this.handlePrevMonthDisabled()}
           nextMonthDisabled={this.handleNextMonthDisabled()}
-          currentYear={this.state.currentYear}
-          currentMonth={this.state.currentMonth}
+          date={this.state.date}
           prevMonth={this.prevMonth.bind(this)}
-          nextMonth={this.nextMonth.bind(this)}/>
+          nextMonth={this.nextMonth.bind(this)} />
         <Labels />
         <Days
-          handleDayClick={this.handleDayClick.bind(this)}
-          currentYear={this.state.currentYear}
-          currentMonth={this.state.currentMonth}
+          renderDay={this.renderDay.bind(this)}
+          date={this.state.date}
+          selectedDate={this.state.selectedDate}
           minDate={this.props.minDate}
           maxDate={this.props.maxDate} />
       </div>
     )
   }
 }
+
+Calendar.propTypes = {
+  date: PropTypes.object.isRequired,
+  selectedDate: PropTypes.object.isRequired,
+  minDate: PropTypes.object,
+  maxDate: PropTypes.object,
+  selectedDayCallback: PropTypes.func,
+  prevMonthCallback: PropTypes.func,
+  nextMonthCallback: PropTypes.func,
+}
+
+export default Calendar

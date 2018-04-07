@@ -10,13 +10,13 @@ export default class CalendarHeader extends React.Component {
 
   handlePrevMonth() {
     if (!this.props.prevMonthDisabled) {
-      this.props.prevMonth(this.props.currentYear, this.props.currentMonth)
+      this.props.prevMonth()
     }
   }
 
   handleNextMonth() {
     if (!this.props.nextMonthDisabled) {
-      this.props.nextMonth(this.props.currentYear, this.props.currentMonth)
+      this.props.nextMonth()
     }
   }
 
@@ -30,14 +30,14 @@ export default class CalendarHeader extends React.Component {
 
   render() {
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          currentMonth = monthNames[this.props.currentMonth -1]
+          currentMonth = monthNames[this.props.date.getMonth()]
 
     return (
       <div className="calendar-header">
         <div onClick={this.handlePrevMonth.bind(this)}>
           {this.renderPrevMonthIcon()}
         </div>
-        <h3>{currentMonth} {this.props.currentYear}</h3>
+        <h3>{currentMonth} {this.props.date.getFullYear()}</h3>
         <div onClick={this.handleNextMonth.bind(this)}>
           {this.renderNextMonthIcon()}
         </div>
