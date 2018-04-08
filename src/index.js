@@ -1,3 +1,7 @@
+window.FontAwesomeConfig = {
+  searchPseudoElements: true
+}
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import fontawesome from '@fortawesome/fontawesome'

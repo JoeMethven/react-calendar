@@ -104,7 +104,7 @@
     > * {
       line-height: 45px;
 
-      &.active > span {
+      &.calendar-day-active > span {
         &, &:hover {
           background: $react-calendar-colour-white;
           color: $react-calendar-colour-accent;
@@ -112,8 +112,18 @@
         }
       }
 
+      &.calendar-day-busy > span {
+        position: relative;
+
+        &:before {
+          content: '\f111';
+          font-family: 'FontAwesome';
+          color: $react-calendar-colour-white;
+        }
+      }
+
       &[disabled] {
-        color: darken($react-calendar-colour-accent, 3%);
+        color: darken($react-calendar-colour-accent, 6%);
 
         span {
           cursor: not-allowed;

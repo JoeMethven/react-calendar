@@ -8,7 +8,7 @@ export default class CalendarDay extends React.Component {
     if (this.props.date.getFullYear() === this.props.selectedDate.getFullYear() &&
         this.props.date.getMonth() === this.props.selectedDate.getMonth() &&
         day === this.props.selectedDate.getDate()) {
-      return 'active'
+      return 'calendar-day-active'
     }
 
     return null
@@ -19,8 +19,23 @@ export default class CalendarDay extends React.Component {
     if (!day ||
         this.props.minDate && this.handleMinDateDisabled(day) ||
         this.props.maxDate && this.handleMaxDateDisabled(day) ||
-        this.props.availability && this.props.availability.hasOwnProperty(date) && !this.props.availability[date].length) {
+        this.props.availability && this.props.availability.hasOwnProperty(date) && !this.props.availability[date].available.length) {
       return true
+    }
+
+    return false
+  }
+
+  handleDayBusy(day) {
+    const date = day ? new Date(this.props.date.getFullYear(), this.props.date.getMonth(), day, 0, 0, 0, 0).toISOString() : null
+    if (this.props.availability &&
+        this.props.availability.hasOwnProperty(date) &&
+        this.props.availability[date].events &&
+        this.props.availability[date].events.length &&
+        this.props.availability[date].available &&
+        this.props.availability[date].available.length) {
+
+      return 'calendar-day-busy'
     }
 
     return false
@@ -76,8 +91,25 @@ export default class CalendarDay extends React.Component {
 
     return (
       <ul className="calendar-days">
-        {prevMonthItems.map(number => <Day key={number + 1} disabled={this.handleDayDisabled.bind(this)} renderDay={this.props.renderDay} />)}
-        {monthItems.map(day => <Day key={day + 1} day={day + 1} active={this.handleDayActive.bind(this)} disabled={this.handleDayDisabled.bind(this)} renderDay={this.props.renderDay} />)}
+        {prevMonthItems.map(number => {
+          return (
+            <Day
+              key={number + 1}
+              disabled={this.handleDayDisabled.bind(this)}
+              renderDay={this.props.renderDay} />
+          )
+        })}
+        {monthItems.map(day => {
+          return (
+            <Day
+              key={day + 1}
+              day={day + 1}
+              active={this.handleDayActive.bind(this)}
+              busy={this.handleDayBusy.bind(this)}
+              disabled={this.handleDayDisabled.bind(this)}
+              renderDay={this.props.renderDay} />
+          )
+        })}
       </ul>
     )
   }
