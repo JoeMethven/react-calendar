@@ -15,11 +15,6 @@ export default class CalendarDay extends React.Component {
   }
 
   handleDayDisabled(day) {
-    console.log('datey', {
-      'this.props.date.getFullYear()': this.props.date.getFullYear(),
-      'this.props.date.getMonth()': this.props.date.getMonth(),
-      'day': day
-    });
     const date = day ? new Date(this.props.date.getFullYear(), this.props.date.getMonth(), day, 0, 0, 0, 0).toISOString() : null
     if (!day ||
         this.props.minDate && this.handleMinDateDisabled(day) ||
@@ -27,13 +22,6 @@ export default class CalendarDay extends React.Component {
         this.props.availability && this.props.availability.hasOwnProperty(date) && !this.props.availability[date].length) {
       return true
     }
-
-    // const date = new Date(this.)
-    // if (!day ||
-    //     this.props.minDate && this.handleMinDateDisabled(day) ||
-    //     this.props.maxDate && this.handleMaxDateDisabled(day)) {
-    //   return true
-    // }
 
     return false
   }
