@@ -40,9 +40,9 @@ class Calendar extends React.Component {
     this.setState({date: selectedDate, selectedDate})
 
     // callback to parent component if given
-    if (this.props.selectedDayCallback) {
-      this.props.selectedDayCallback(selectedDate)
-    }
+    // if (this.props.selectedDayCallback) {
+    //   this.props.selectedDayCallback(selectedDate)
+    // }
   }
 
   prevMonth() {

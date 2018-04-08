@@ -11,7 +11,7 @@ export default class CalendarDay extends React.Component {
       return 'calendar-day-active'
     }
 
-    return null
+    return ''
   }
 
   handleDayDisabled(day) {
@@ -23,7 +23,7 @@ export default class CalendarDay extends React.Component {
       return true
     }
 
-    return false
+    return ''
   }
 
   handleDayBusy(day) {
@@ -35,6 +35,11 @@ export default class CalendarDay extends React.Component {
         this.props.availability[date].available &&
         this.props.availability[date].available.length) {
 
+      console.log('busy: ', {
+        date,
+        'this.props.availability[date].events.length': this.props.availability[date].events.length,
+        'this.props.availability[date].available.length': this.props.availability[date].available.length
+      })
       return 'calendar-day-busy'
     }
 
