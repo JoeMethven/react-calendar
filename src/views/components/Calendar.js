@@ -108,7 +108,8 @@ class Calendar extends React.Component {
           date={this.state.date}
           selectedDate={this.state.selectedDate}
           minDate={this.props.minDate}
-          maxDate={this.props.maxDate} />
+          maxDate={this.props.maxDate}
+          availability={this.props.availability}  />
       </div>
     )
   }
