@@ -40,9 +40,9 @@ class Calendar extends React.Component {
     this.setState({date: selectedDate, selectedDate})
 
     // callback to parent component if given
-    // if (this.props.selectedDayCallback) {
-    //   this.props.selectedDayCallback(selectedDate)
-    // }
+    if (this.props.selectedDayCallback) {
+      this.props.selectedDayCallback(selectedDate)
+    }
   }
 
   prevMonth() {
@@ -70,6 +70,10 @@ class Calendar extends React.Component {
   }
 
   handlePrevMonthDisabled() {
+    if (this.props.loading) {
+      return true
+    }
+
     if (this.props.minDate) {
       let date = this.state.date
       // prev month is less or equal to minDate
@@ -82,6 +86,10 @@ class Calendar extends React.Component {
   }
 
   handleNextMonthDisabled() {
+    if (this.props.loading) {
+      return true
+    }
+
     if (this.props.maxDate) {
       let date = this.state.date
       // next month is greater or equal to maxDate
@@ -95,13 +103,14 @@ class Calendar extends React.Component {
 
   render() {
     return (
-      <div className="calendar">
+      <div className={'calendar ' + (this.props.loading ? 'calendar-loading' : '')}>
         <Header
           prevMonthDisabled={this.handlePrevMonthDisabled()}
           nextMonthDisabled={this.handleNextMonthDisabled()}
           date={this.state.date}
           prevMonth={this.prevMonth.bind(this)}
-          nextMonth={this.nextMonth.bind(this)} />
+          nextMonth={this.nextMonth.bind(this)}
+          loading={this.props.loading} />
         <Labels />
         <Days
           renderDay={this.renderDay.bind(this)}
@@ -109,7 +118,8 @@ class Calendar extends React.Component {
           selectedDate={this.state.selectedDate}
           minDate={this.props.minDate}
           maxDate={this.props.maxDate}
-          availability={this.props.availability}  />
+          availability={this.props.availability}
+          loading={this.props.loading} />
       </div>
     )
   }

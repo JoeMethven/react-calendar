@@ -4,14 +4,32 @@ import ReactDOM from 'react-dom';
 import Day from './CalendarDay'
 
 export default class CalendarDay extends React.Component {
+  nextDay(day) {
+
+  }
+
   handleDayActive(day) {
+    let ifDisabledSkipday = (currentDay) => {
+      if (this.handleDayDisabled(currentDay)) {
+        return ifDisabledSkipday(currentDay + 1)
+      }
+
+      return currentDay
+    }
+
     if (this.props.date.getFullYear() === this.props.selectedDate.getFullYear() &&
         this.props.date.getMonth() === this.props.selectedDate.getMonth() &&
         day === this.props.selectedDate.getDate()) {
-      return 'calendar-day-active'
+
+      if (this.handleDayDisabled(day)) {
+        this.props.renderDay(ifDisabledSkipday(day))
+        return false;
+      }
+
+      return true
     }
 
-    return ''
+    return false
   }
 
   handleDayDisabled(day) {
@@ -20,10 +38,11 @@ export default class CalendarDay extends React.Component {
         this.props.minDate && this.handleMinDateDisabled(day) ||
         this.props.maxDate && this.handleMaxDateDisabled(day) ||
         this.props.availability && this.props.availability.hasOwnProperty(date) && !this.props.availability[date].available.length) {
+
       return true
     }
 
-    return ''
+    return false
   }
 
   handleDayBusy(day) {
@@ -35,12 +54,7 @@ export default class CalendarDay extends React.Component {
         this.props.availability[date].available &&
         this.props.availability[date].available.length) {
 
-      console.log('busy: ', {
-        date,
-        'this.props.availability[date].events.length': this.props.availability[date].events.length,
-        'this.props.availability[date].available.length': this.props.availability[date].available.length
-      })
-      return 'calendar-day-busy'
+      return true
     }
 
     return false
@@ -61,8 +75,6 @@ export default class CalendarDay extends React.Component {
 
     return false
   }
-
-
 
   handleMaxDateDisabled(day) {
     let date = new Date(this.props.date)
@@ -89,10 +101,11 @@ export default class CalendarDay extends React.Component {
   }
 
   render() {
-    const totalDays = this.renderDaysOfMonth(),
+    const { loading } = this.props,
+          totalDays = this.renderDaysOfMonth(),
           firstDay = this.renderWeekdayOfFirstDay(totalDays),
-          prevMonthItems = Array.from(Array(firstDay - 1).keys()),
-          monthItems = Array.from(Array(totalDays).keys())
+          prevMonthItems = loading ? [] : Array.from(Array(firstDay - 1).keys()),
+          monthItems = loading ? [] : Array.from(Array(totalDays).keys())
 
     return (
       <ul className="calendar-days">
@@ -105,13 +118,15 @@ export default class CalendarDay extends React.Component {
           )
         })}
         {monthItems.map(day => {
+          day++
+
           return (
             <Day
-              key={day + 1}
-              day={day + 1}
-              active={this.handleDayActive.bind(this)}
-              busy={this.handleDayBusy.bind(this)}
-              disabled={this.handleDayDisabled.bind(this)}
+              key={day}
+              day={day}
+              active={this.handleDayActive(day)}
+              busy={this.handleDayBusy(day)}
+              disabled={this.handleDayDisabled(day)}
               renderDay={this.props.renderDay} />
           )
         })}

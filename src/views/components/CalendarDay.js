@@ -3,13 +3,17 @@ import ReactDOM from 'react-dom';
 
 export default class CalendarDay extends React.Component {
   render() {
-    const disabled = this.props.disabled(this.props.day),
-          active = this.props.active ? this.props.active(this.props.day) : '',
-          busy = this.props.busy ? this.props.busy(this.props.day) : '',
-          day = typeof this.props.day === 'number' ? <span>{this.props.day}</span> : null
+    const active = this.props.active ? 'calendar-day-active' : '',
+          busy = this.props.busy ? 'calendar-day-busy' : '',
+          day = typeof this.props.day === 'number' ? <span>{this.props.day}</span> : null;
 
     return (
-      <li className={active + ' ' + busy} disabled={disabled} onClick={disabled ? null : () => this.props.renderDay(this.props.day)}>{day}</li>
+      <li
+        className={active + ' ' + busy}
+        disabled={this.props.disabled}
+        onClick={this.props.disabled ? null : () => this.props.renderDay(this.props.day)}>
+        {day}
+      </li>
     )
   }
 }
